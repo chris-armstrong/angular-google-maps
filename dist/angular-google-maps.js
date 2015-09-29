@@ -1,4 +1,4 @@
-/*! angular-google-maps 2.1.5 2015-06-18
+/*! angular-google-maps 2.1.5 2015-10-07
  *  AngularJS directives for Google Maps
  *  git: https://github.com/angular-ui/angular-google-maps.git
  */
@@ -1998,6 +1998,26 @@ Nicholas McCready - https://twitter.com/nmccready
 
       })();
       return ClustererMarkerManager;
+    }
+  ]);
+
+}).call(this);
+;(function() {
+  angular.module('uiGmapgoogle-maps.directives.api.managers').service('uiGmapGoogleMapObjectManager', [
+    function() {
+      var _sharedInstance;
+      _sharedInstance = null;
+      return {
+        createMapInstance: function(parentElement, options) {
+          if (!_sharedInstance) {
+            _sharedInstance = new google.maps.Map(parentElement, options);
+          } else {
+            angular.element(parentElement).append(_sharedInstance.getDiv());
+            _sharedInstance.setOptions(options);
+          }
+          return _sharedInstance;
+        }
+      };
     }
   ]);
 
@@ -6090,7 +6110,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
     hasProp = {}.hasOwnProperty;
 
   angular.module('uiGmapgoogle-maps.directives.api').factory('uiGmapMap', [
-    '$timeout', '$q', 'uiGmapLogger', 'uiGmapGmapUtil', 'uiGmapBaseObject', 'uiGmapCtrlHandle', 'uiGmapIsReady', 'uiGmapuuid', 'uiGmapExtendGWin', 'uiGmapExtendMarkerClusterer', 'uiGmapGoogleMapsUtilV3', 'uiGmapGoogleMapApi', 'uiGmapEventsHelper', function($timeout, $q, $log, GmapUtil, BaseObject, CtrlHandle, IsReady, uuid, ExtendGWin, ExtendMarkerClusterer, GoogleMapsUtilV3, GoogleMapApi, EventsHelper) {
+    '$timeout', '$q', 'uiGmapLogger', 'uiGmapGmapUtil', 'uiGmapBaseObject', 'uiGmapCtrlHandle', 'uiGmapIsReady', 'uiGmapuuid', 'uiGmapExtendGWin', 'uiGmapExtendMarkerClusterer', 'uiGmapGoogleMapsUtilV3', 'uiGmapGoogleMapApi', 'uiGmapEventsHelper', 'uiGmapGoogleMapObjectManager', function($timeout, $q, $log, GmapUtil, BaseObject, CtrlHandle, IsReady, uuid, ExtendGWin, ExtendMarkerClusterer, GoogleMapsUtilV3, GoogleMapApi, EventsHelper, GoogleMapObjectManager) {
       'use strict';
       var DEFAULTS, Map, initializeItems;
       DEFAULTS = void 0;
@@ -6211,7 +6231,7 @@ Original idea from: http://stackoverflow.com/questions/22758950/google-map-drawi
                 zoom: scope.zoom,
                 bounds: scope.bounds
               });
-              _gMap = new google.maps.Map(el.find('div')[1], mapOptions);
+              _gMap = GoogleMapObjectManager.createMapInstance(el.find('div')[1], mapOptions);
               _gMap['uiGmap_id'] = uuid.generate();
               dragging = false;
               listeners.push(google.maps.event.addListenerOnce(_gMap, 'idle', function() {
@@ -12454,7 +12474,7 @@ window['RichMarkerPosition'] = RichMarkerPosition;
 
 /***/ },
 /* 2 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/*
 	Graph implemented as a modified incidence list. O(1) for every typical
@@ -12748,7 +12768,7 @@ window['RichMarkerPosition'] = RichMarkerPosition;
 
 /***/ },
 /* 3 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/*
 	Minimum heap, i.e. smallest node at root.
@@ -12895,7 +12915,7 @@ window['RichMarkerPosition'] = RichMarkerPosition;
 
 /***/ },
 /* 4 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/*
 	Doubly Linked.
@@ -13172,7 +13192,7 @@ window['RichMarkerPosition'] = RichMarkerPosition;
 
 /***/ },
 /* 5 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/*
 	Kind of a stopgap measure for the upcoming [JavaScript
@@ -13363,7 +13383,7 @@ window['RichMarkerPosition'] = RichMarkerPosition;
 
 /***/ },
 /* 6 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/*
 	Amortized O(1) dequeue!
@@ -13455,7 +13475,7 @@ window['RichMarkerPosition'] = RichMarkerPosition;
 
 /***/ },
 /* 7 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ function(module, exports) {
 
 	/*
 	Credit to Wikipedia's article on [Red-black
